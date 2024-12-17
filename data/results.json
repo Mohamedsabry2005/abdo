@@ -241,5 +241,15 @@
         "cpm": 790.2990319507138,
         "wpm": 158.05980639014277,
         "accuracy": 2.272727272727273
+    },
+    {
+        "username": "a",
+        "time": 0.9272162914276123,
+        "characters": 11,
+        "words": 1,
+        "cpm": 703.618858802986,
+        "wpm": 63.96535080027145,
+        "accuracy": 2.5,
+        "text": "This is a fallback text for typing test."
     }
 ]
