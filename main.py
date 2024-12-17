@@ -122,6 +122,8 @@ class MainPage(ctk.CTkFrame):
         elapsed_time = time.time() - self.start_time
         self.calculate_results(elapsed_time)
         self.show_results()
+        self.save_results_to_json()
+
 
     def calculate_results(self, elapsed_time):
         user_input = self.input_field.get()
@@ -149,6 +151,25 @@ class MainPage(ctk.CTkFrame):
         self.text_area.insert(tk.END, "\n\n" + results_text) # Append results to the text area
         self.text_area.configure(state="disabled")
 
+    def save_results_to_json(self):
+      try:
+          with open("results.json", "r") as f:
+              data = json.load(f)
+      except FileNotFoundError:
+          data = []
+
+      data.append({
+          "username": self.username,
+          "time": self.elapsed_time,
+          "characters": self.characters,
+          "words": self.words,
+          "cpm": self.cpm,
+          "wpm": self.wpm,
+          "accuracy": self.accuracy
+      })
+
+      with open("results.json", "w") as f:
+          json.dump(data, f, indent=4)
 
 class App(ctk.CTk):
     def __init__(self):
