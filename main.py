@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import time
 import tkinter as tk
+import json
 class LoginPage(ctk.CTkFrame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -44,7 +45,18 @@ class LoginPage(ctk.CTkFrame):
 
         try:
             with open('users.json','r') as f:
-                data=json.load
+                data=json.load(f)
+                valid_users=data.get('users',[])
+            for user in valid_users:
+              if user["username"] == username and user["password"] == password:
+                self.error_label.configure(text="")
+                print("Login Successful")
+                self.master.switch_to_main_app(username) # Example of switching to the main app
+                return
+            self.error_label.configure(text="Invalid username or password.")
+        except FileNotFoundError:
+            self.error_label.configure(text="users file not found.")
+
 
 class MainPage(ctk.CTkFrame):
     def __init__(self, master=None, username="", **kwargs):
@@ -110,7 +122,6 @@ class MainPage(ctk.CTkFrame):
         elapsed_time = time.time() - self.start_time
         self.calculate_results(elapsed_time)
         self.show_results()
-
 
     def calculate_results(self, elapsed_time):
         user_input = self.input_field.get()
