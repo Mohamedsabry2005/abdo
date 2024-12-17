@@ -92,10 +92,21 @@ class MainPage(ctk.CTkFrame):
         self.timer_label.grid(row=3, column=0, padx=20, pady=(0, 20))
         self.timer_label.grid_remove() # Hide Timer
 
+        # restart button
+        self.restart_button = ctk.CTkButton(self, text="Restart", command=self.restart, state="disabled")
+        self.restart_button.grid(row=4, column=0, padx=20, pady=(10, 20), sticky="ew")
+
+
         self.timer_running = False
         self.elapsed_time = 0.0
 
         self.set_text(self.target_text) 
+
+    def handle_key_release(self, event=None):
+        if not self.timer_running:
+            self.start_timer()
+        if self.input_field.get() == self.target_text:
+            self.stop_timer()
 
     def start_timer(self, event=None):
         if not self.timer_running:
@@ -170,6 +181,18 @@ class MainPage(ctk.CTkFrame):
 
       with open("results.json", "w") as f:
           json.dump(data, f, indent=4)
+
+    def restart(self):
+        self.input_field.delete(0, tk.END) 
+        self.timer_label.grid_remove() 
+        self.timer_running = False
+        self.elapsed_time = 0.0
+        self.timer_label.configure(text="Time: 0.00s") 
+        self.text_area.configure(state="normal")
+        self.text_area.delete("1.0", tk.END)
+        self.text_area.insert(tk.END, self.target_text) 
+        self.text_area.configure(state="disabled")
+        self.restart_button.configure(state="disabled") 
 
 class App(ctk.CTk):
     def __init__(self):
