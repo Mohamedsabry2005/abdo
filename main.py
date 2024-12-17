@@ -151,7 +151,11 @@ class MainPage(ctk.CTkFrame):
         self.wpm = 0.0
         self.cpm = 0.0
         self.accuracy = 0.0
+<<<<<<< HEAD
         self.elapsed_time = 0.0
+=======
+        self.target_text = "This is some example text for the text area." 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
 
         # Load texts dynamically from JSON
         self.texts = self.load_sentences()
@@ -172,25 +176,43 @@ class MainPage(ctk.CTkFrame):
         self.heading_label = ctk.CTkLabel(self, text=f"Hello, {self.username}!", font=ctk.CTkFont(size=20, weight="bold"))
         self.heading_label.grid(row=0, column=0, padx=20, pady=(20, 10), sticky="ew")
 
+<<<<<<< HEAD
         # Text Area
         self.text_area = ctk.CTkTextbox(self, wrap="word", state="disabled")
+=======
+        # Text area
+        self.text_area = ctk.CTkTextbox(self, wrap="word", state="disabled") 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
         self.text_area.grid(row=1, column=0, padx=20, pady=(0, 10), sticky="nsew")
 
         # Input Field
         self.input_field = ctk.CTkEntry(self)
         self.input_field.grid(row=2, column=0, padx=20, pady=(0, 20), sticky="ew")
+<<<<<<< HEAD
         self.input_field.bind("<KeyRelease>", self.start_timer)
         self.input_field.bind("<Return>", self.on_enter)
+=======
+        self.input_field.bind("<KeyRelease>", self.handle_key_release) 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
 
         # Timer Label
         self.timer_label = ctk.CTkLabel(self, text="Time: 0.00s")
         self.timer_label.grid(row=3, column=0, padx=20, pady=(0, 20))
+<<<<<<< HEAD
         self.timer_label.grid_remove()
 
         # Restart Button (Hidden until test ends)
         self.restart_button = ctk.CTkButton(self, text="Restart", command=self.restart_test)
         self.restart_button.grid(row=4, column=0, padx=20, pady=(10, 20))
         self.restart_button.grid_remove()
+=======
+        self.timer_label.grid_remove() 
+
+        # Restart Button
+        self.restart_button = ctk.CTkButton(self, text="Restart", command=self.restart, state="disabled")
+        self.restart_button.grid(row=5, column=0, padx=20, pady=(10, 20))
+        self.restart_button.grid_remove() 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
 
         self.timer_running = False
         self.results = []
@@ -211,17 +233,32 @@ class MainPage(ctk.CTkFrame):
             print("Error: Failed to decode sentences.json.")
             return []
 
+<<<<<<< HEAD
     def start_timer(self, event=None):
         if not self.timer_running and not self.test_completed:
             self.start_time = time.time()
             self.timer_running = True
             self.timer_label.grid()
+=======
+    def handle_key_release(self, event=None):
+        if not self.timer_running:
+            self.start_timer()
+        if self.input_field.get() == self.target_text:
+            self.stop_timer()
+
+    def start_timer(self):
+        if not self.timer_running:
+            self.start_time = time.time()
+            self.timer_running = True
+            self.timer_label.grid() 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
             self.update_timer()
 
     def update_timer(self):
         if self.timer_running:
             self.elapsed_time = time.time() - self.start_time
             self.timer_label.configure(text=f"Time: {self.elapsed_time:.2f}s")
+<<<<<<< HEAD
             self.after(10, self.update_timer)
 
     def set_text(self, text):
@@ -245,6 +282,24 @@ class MainPage(ctk.CTkFrame):
             self.save_and_display_results()
 
             # Show Restart Button
+=======
+            self.after(10, self.update_timer) 
+
+    def set_text(self, text):
+        self.text_area.configure(state="normal") 
+        self.text_area.delete("1.0", tk.END)
+        self.text_area.insert(tk.END, text)
+        self.text_area.configure(state="disabled") 
+
+    def stop_timer(self):
+        if self.timer_running: 
+            self.timer_running = False
+            self.elapsed_time = time.time() - self.start_time
+            self.calculate_results(self.elapsed_time)
+            self.show_results()
+            self.save_results_to_json()
+            self.restart_button.configure(state="normal") # Enable Restart button
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
             self.restart_button.grid()
 
     def calculate_results(self, elapsed_time):
@@ -252,7 +307,11 @@ class MainPage(ctk.CTkFrame):
         self.characters = len(user_input)
         self.words = len(user_input.split())
 
+<<<<<<< HEAD
         if elapsed_time > 0:
+=======
+        if elapsed_time > 0: 
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
             self.cpm = (self.characters / elapsed_time) * 60
             self.wpm = (self.words / elapsed_time) * 60
 
@@ -260,6 +319,7 @@ class MainPage(ctk.CTkFrame):
         if len(self.texts[self.current_text_index]) > 0:
             self.accuracy = (correct_characters / len(self.texts[self.current_text_index])) * 100
         else:
+<<<<<<< HEAD
             self.accuracy = 0
 
     def save_and_display_results(self):
@@ -299,6 +359,54 @@ class MainPage(ctk.CTkFrame):
         # Cycle to the next text
         self.current_text_index = (self.current_text_index + 1) % len(self.texts)
         self.set_text(self.texts[self.current_text_index])
+=======
+            self.accuracy = 0 
+
+    def show_results(self):
+        results_text = f"Time: {self.elapsed_time:.2f}s\n" \
+                       f"Characters: {self.characters}\n" \
+                       f"Words: {self.words}\n" \
+                       f"CPM: {self.cpm:.2f}\n" \
+                       f"WPM: {self.wpm:.2f}\n" \
+                       f"Accuracy: {self.accuracy:.2f}%"
+        self.text_area.configure(state="normal")
+        self.text_area.insert(tk.END, "\n\n" + results_text) 
+        self.text_area.configure(state="disabled")
+
+    def save_results_to_json(self):
+        try:
+            with open("results.json", "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            data = []
+
+        data.append({
+            "username": self.username,
+            "time": self.elapsed_time,
+            "characters": self.characters,
+            "words": self.words,
+            "cpm": self.cpm,
+            "wpm": self.wpm,
+            "accuracy": self.accuracy
+        })
+
+        with open("results.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+    def restart(self):
+        self.input_field.delete(0, tk.END) 
+        self.timer_label.grid_remove() 
+        self.timer_running = False
+        self.elapsed_time = 0.0
+        self.timer_label.configure(text="Time: 0.00s") 
+        self.text_area.configure(state="normal")
+        self.text_area.delete("1.0", tk.END)
+        self.text_area.insert(tk.END, self.target_text) 
+        self.text_area.configure(state="disabled")
+        self.restart_button.configure(state="disabled") 
+        self.restart_button.grid_remove()
+
+>>>>>>> 566d9d5400bcd3e82f2762d97a1362df8eac856e
 
 class App(ctk.CTk):
     def __init__(self):
